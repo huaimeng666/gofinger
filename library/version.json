@@ -2,23 +2,23 @@
   "files": [
     {
       "path": "library/finger.json",
-      "md5": "8e48138ae6db15ab7a6611e7d9c77fa5",
-      "url": "https://raw.githubusercontent.com/huaimeng666/gofinger/main/library/finger.json"
+      "md5": "57b7289fb37204621150b072c628a9c1",
+      "url": "https://raw.githubusercontent.com/huaimeng666/finger/main/library/finger.json"
     },
     {
       "path": "library/finger.yaml",
-      "md5": "1af96486bd72e57e4413920971ec8945",
-      "url": "https://raw.githubusercontent.com/huaimeng666/gofinger/main/library/finger.yaml"
+      "md5": "2371a1948c5b4a9f44464557ee77c7b7",
+      "url": "https://raw.githubusercontent.com/huaimeng666/finger/main/library/finger.yaml"
     },
     {
       "path": "library/cdn_ip_cidr.json",
       "md5": "237abb6d0b16180e5d26b5a89c2c86f8",
-      "url": "https://raw.githubusercontent.com/huaimeng666/gofinger/main/library/cdn_ip_cidr.json"
+      "url": "https://raw.githubusercontent.com/huaimeng666/finger/main/library/cdn_ip_cidr.json"
     },
     {
       "path": "library/data/ip2region.xdb",
       "md5": "508c6b0257a02152b9d1b2b3792936e1",
-      "url": "https://raw.githubusercontent.com/huaimeng666/gofinger/main/library/data/ip2region.xdb"
+      "url": "https://raw.githubusercontent.com/huaimeng666/finger/main/library/data/ip2region.xdb"
     }
   ]
 }

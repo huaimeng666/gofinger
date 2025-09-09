@@ -6,13 +6,14 @@
 
 它旨在帮助安全工程师和渗透测试人员快速、精准地识别网络资产指纹，并以美观、易读的格式呈现结果。工具原生支持本地指纹库与 Fofa、Quake、Hunter 等主流API联动，并集成了 Chainreactors Fingers、Goby、Ehole、Wappalyzer 等多种知名指纹库，是现代网络空间测绘和资产管理不可或缺的瑞士军刀。
 
-- **当前版本**：V0.5(性能优化版)
+- **当前版本**：V0.6(主动探测版)
 - **核心作者**：huaimeng
 - **项目地址**：[https://github.com/huaimeng666/gofinger](https://github.com/huaimeng666/gofinger)
 
 ### ✨ 核心功能亮点
 
 - **多源输入支持**：无缝处理单个URL、IP（含CIDR）、文件列表，并能直接消费 Fofa、Quake、Hunter 的查询结果。
+- **精准主动指紋探测**：通过 `-a` 参数启用，由 `finger.yaml` 驱动，实现“路径-规则”一对一的精确匹配，增加主动识别功能，发现隐藏资产，极大降低漏报误报率。
 - **多维指纹集成**：原生支持 Chainreactors Fingers、Goby、Ehole、Wappalyzer、Favicon 等多种指纹库，可按需组合，识别维度更广。
 - **异步I/O并发引擎**：采用**扫描与写入分离**的并行工作流，彻底消除磁盘I/O瓶颈，大幅提升大规模扫描任务的吞吐量和效率。
 - **智能格式化输出**：支持 CSV、JSON（可压缩为.gz）和 XLSX 格式。其中 **XLSX 报告具备智能列宽调整和专业样式**，告别手动调整，结果一目了然。
@@ -39,12 +40,34 @@
 
 ### 安装步骤
 
-1.  **下载最新发布项目**
-    
+1.  **克隆项目**
     ```bash
-    https://github.com/huaimeng666/gofinger
+    git clone https://github.com/huaimeng666/gofinger.git
+    cd finger
     ```
 
+2.  **安装 Go 依赖**
+    ```bash
+    go mod tidy
+    ```
+    *若下载缓慢，可配置 Go 代理：*
+    ```bash
+    go env -w GOPROXY=https://goproxy.cn,direct
+    ```
+
+3.  **编译项目**
+    
+    ```bash
+    # 编译当前系统的版本
+    go build -o gofinger main.go
+    
+    # (可选) 交叉编译其他平台版本
+    # For Linux
+    GOOS=linux GOARCH=amd64 go build -o gofinger-linux
+    # For Windows
+    GOOS=windows GOARCH=amd64 go build -o gofinger.exe
+    ```
+    
 4.  **测试运行**
     ```bash
     ./finger -h
@@ -145,9 +168,10 @@ hunter_key: "your_hunter_key"
 | `-f`                      | 指定 URL 文件路径                               | 无       | `-f urls.txt`                           |
 | `-i`                      | 指定单个 IP 或 IP 段                            | 无       | `-i 192.168.1.1` 或 `-i 192.168.1.0/24` |
 | `-if`                     | 指定 IP 文件路径                                | 无       | `-if ips.txt`                           |
+| `-a`, `--active`          | 启用主动指纹探测                                | `false`  | `-a`                                    |
 | `-fr`, `-fofa_rule`       | 指定 Fofa 查询规则                              | 无       | `-fr domain="example.com"`              |
-| `-qr`, `-quake_rule`      | 指定 Quake 查询规则                             | 无       | `-qr title:\"中国移动\"`                |
-| `-hr`, `-hunter_rule`     | 指定 Hunter 查询规则                            | 无       | `-hr title="中国移动"`                  |
+| `-qr`, `-quake_rule`      | 指定 Quake 查询规则                             | 无       | `-qr title:"中国移动"`                |
+| `-hr`, `-hunter_rule`     | 指定 Hunter 查询规则                            | 无       | `-hr title:"中国移动"`                  |
 | `-o`                      | 输出格式 (csv, json, xlsx)                      | 无       | `-o xlsx` (支持智能列宽)                |
 | `-p`                      | 代理 URL (http, socks5, system)                 | 无       | `-p socks5://127.0.0.1:1080`            |
 | `-fofa`                   | 启用 Fofa API 查询 IP 信息                      | false    | `-i 192.168.1.0/24 -fofa`               |
@@ -166,45 +190,52 @@ hunter_key: "your_hunter_key"
 
 ### 使用场景与示例
 
-1.  **扫描单个 URL**
-    ```bash
-    gofinger -u https://example.com -o xlsx
-    ```
+1. **扫描单个 URL**
+   ```bash
+   gofinger -u https://example.com -o xlsx
+   ```
 
-    ![image-20250723113127443](img/image-20250723113127443.png)
-    
-2.  **批量扫描 URL 文件**
-    
-    ```bash
-    gofinger -f urls.txt -o csv -t 50
-    ```
-    
-3.  **使用 Hunter API 查询资产**
-    
-    ```bash
-    gofinger  -qr "title:\"nacos\" AND country:\"China\"" -o xlsx
-    ```
-    
-    ![image-20250723112929170](img/image-20250723112929170.png))
-    
-    ![image-20250723112812888](img/image-20250723112812888.png)
-    
-4.  **扫描 IP 段并结合 Quake API**
-    
-    ```bash
-    gofinger -i 192.168.1.0/24 -quake -o csv
-    ```
-    
-5.  **调试模式扫描**
-    ```bash
-    gofinger -u https://example.com -log-level debug --log-file debug.log
-    ```
+   ![image-20250723113127443](img/image-20250723113127443.png)
 
-6.  **混合指纹库扫描**
-    
-    ```bash
-    gofinger -f urls.txt -l goby,ehole,local -o xlsx
-    ```
+2. **启用主动探测**
+   ```bash
+   gofinger -u https://example.com -a -o xlsx
+   ```
+
+   ![image-20250814195026956](img/image-20250814195026956.png)
+
+3. **批量扫描 URL 文件**
+
+   ```bash
+   gofinger -f urls.txt -o csv -t 50
+   ```
+
+4. **使用 Hunter API 查询资产**
+
+   ```bash
+   gofinger  -qr "title:\"nacos\" AND country:\"China\"" -o xlsx
+   ```
+
+   ![image-20250723112929170](img/image-20250723112929170.png))
+
+   ![image-20250723112812888](img/image-20250723112812888.png)
+
+5. **扫描 IP 段并结合 Quake API**
+
+   ```bash
+   gofinger -i 192.168.1.0/24 -quake -o csv
+   ```
+
+6. **调试模式扫描**
+   ```bash
+   gofinger -u https://example.com -log-level debug --log-file debug.log
+   ```
+
+7. **混合指纹库扫描**
+
+   ```bash
+   gofinger -f urls.txt -l goby,ehole,local -o xlsx
+   ```
 
 ​	使用 Goby 和 E-hole 指纹库进行扫描，如果它们没有识别出结果，则使用本地指纹库进行补充扫描。  
 
@@ -217,9 +248,9 @@ hunter_key: "your_hunter_key"
 
 Finger 支持以下代理类型：  
 
-- **HTTP/HTTPS 代理**：`proxy: "http://proxy:port"`  
-- **SOCKS5 代理**：`proxy: "socks5://proxy:port"`  
-- **系统代理**：`proxy: "system"`（从环境变量或 Windows 注册表读取）。
+-   **HTTP/HTTPS 代理**：`proxy: "http://proxy:port"`  
+-   **SOCKS5 代理**：`proxy: "socks5://proxy:port"`  
+-   **系统代理**：`proxy: "system"`（从环境变量或 Windows 注册表读取）。
 
 ### 配置示例
 
@@ -240,12 +271,55 @@ gofinger -u https://example.com -p system
 - 确保代理服务器稳定，延迟过高可能导致请求超时。  
 - 日志会记录代理使用情况，调试时可查看 `-log-level debug`。
 
-## 5. 指纹库管理
+## 5. 主动指纹探测 (v0.6)
+
+- **新增：精准主动指纹探测**
+  - 推出全新的主动扫描 (`-a`) 功能，其逻辑和规则源完全重写。
+  - **废除 `被动识别对Finger.yaml的驱动`**，主动扫描现在由 `finger.yaml` 文件驱动。
+  - 在 `finger.yaml` 的规则中引入新的 `path` 字段，将探测路径与验证指纹强绑定。
+  - 实现“一对一”精确匹配，对探测路径的响应**只会**用其关联的唯一规则进行验证，极大降低误报率。
+  
+  - 明确指纹库职责：`finger.json` 专用于被动扫描，`finger.yaml` 专用于主动扫描。
+- **修复：并发稳定性问题**
+  - 解决了多线程扫描时因并发访问随机数生成器而可能导致的程序随机崩溃问题，大幅提升大规模扫描时的稳定性。
+
+### 新 `finger.yaml` 配置示例
+
+您现在可以直接在 `finger.yaml` 中定义主动探测的目标。
+
+```yaml
+fingerprint:
+  - cms: "Nacos"
+    # path 字段定义了需要主动探测的路径
+    path:
+      - "/nacos/"
+      - "/api/nacos/"
+    # 以下为匹配这条路径响应所使用的唯一规则
+    method: "keyword"
+    location: "body"
+    keyword:
+      - "<title>Nacos</title>"
+
+  - cms: "xxl-job-admin"
+    path:
+      - "/xxl-job-admin/toLogin"
+      - "/xxl-job/toLogin"
+      - "/xxl/toLogin"
+    method: "keyword_any"
+    location: "title"
+    keyword:
+      - "xxl-job-admin"
+      - "任务调度中心"
+      - "XXL-JOB管理平台"
+      - "XXL-JOB任务调度中心"
+```
+
+## 6. 指纹库管理
 
 ### 指纹库结构
 指纹库位于 `library/` 目录，包含以下文件：
 - `finger.json`: 主指纹库，定义 CMS 识别规则（JSON 格式）。
-- `finger.yaml`: 辅助指纹库，格式与 JSON 类似。
+- `finger.yaml`: 主动识别指纹库，格式参考例子。
 - `version.json`: 记录指纹库版本和 MD5 校验值。
 - `cdn_ip_cidr.json`: CDN IP 数据库。
 - `data/ip2region.xdb`: IP 归属数据库。
@@ -298,7 +372,7 @@ gofinger -u https://example.com -p system
 1. 从项目仓库的 `library/` 目录下载最新的 `finger.json` 和 `finger.yaml`。
 2. 替换本地 `library/` 目录中的对应文件。
 
-## 6. 性能优化：从串行到并行(v0.4)
+## 7. 性能优化：从串行到并行(v0.4)
 
 goFinger V0.4.2 版本开始引入了全新的**异步I/O并发模型**，这是其性能远超传统工具的关键。
 
@@ -321,7 +395,7 @@ goFinger V0.4.2 版本开始引入了全新的**异步I/O并发模型**，这是
     -   适当减小线程数: `-t 10`
     -   增加请求超时时间: `-to 20`
 
-## 7. 高级用法
+## 8. 高级用法
 
 ### 结合外部指纹库
 使用 `-l` 参数启用 Chainreactors Fingers SDK 等指纹库：
@@ -344,7 +418,7 @@ output_dir="output"
 gofinger -f "$urls_file" -o xlsx -log-level info --log-file "$output_dir/scan.log"
 ```
 
-## 8. 常见问题与排查 (FAQ)
+## 9. 常见问题与排查 (FAQ)
 
 -   **Q: API 查询失败，提示密钥无效？**
     -   **A**: 检查 `config.yaml` 中的密钥是否正确、账户配额是否耗尽，并可开启 `-log-level debug` 查看详细错误。
@@ -357,7 +431,7 @@ gofinger -f "$urls_file" -o xlsx -log-level info --log-file "$output_dir/scan.lo
 -   **Q: Windows 下日志无颜色？**
     -   **A**: 建议使用 Windows Terminal 或 PowerShell 7，或执行 `reg add HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1` 启用 ANSI 支持。
 
-## 9. 贡献与支持
+## 10. 贡献与支持
 
 我们欢迎任何形式的贡献，无论是提交代码、完善指纹规则，还是报告问题。
 
@@ -366,7 +440,6 @@ gofinger -f "$urls_file" -o xlsx -log-level info --log-file "$output_dir/scan.lo
 3.  **联系作者**: 通过 GitHub Issue 或项目主页联系 `huaimeng`。
 
 # 免责声明
-
 
 
 本工具仅面向**合法授权**的企业安全建设行为，如您需要测试本工具的可用性，请自行搭建靶机环境。

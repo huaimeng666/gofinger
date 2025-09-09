@@ -1,57 +1,30 @@
-# finger.yaml - 指纹库配置文件
-# 用于定义指纹规则，与 finger.json 格式兼容
-# 每个规则包含 CMS、Method、Location 和 Keyword 字段
+fingerprint:		
+  - cms: "Nacos"
+    path:
+    - /nacos/
+    - /api/nacos/
+    method: "keyword"
+    location: "body"
+    keyword:
+      - "<title>Nacos</title>"
+  - cms: "xxl-job-admin"
+    path:
+      - "/xxl-job-admin/toLogin"
+      - "/xxl-job/toLogin"
+      - "/xxl/toLogin"
+    method: "keyword_any"
+    location: "title"
+    keyword:
+      - "xxl-job-admin"
+      - "任务调度中心"
+      - "XXL-JOB管理平台"
+      - "XXL-JOB任务调度中心"
+      
+  - cms: "Alibaba-Druid"
+    path:
+      - "/druid/index.html"
+    method: "keyword"
+    location: "title"
+    keyword:
+      - "Apache Druid"
 
-fingerprint:
-  # # 示例 1: WordPress - 使用 keyword 方法匹配 body
-  # - cms: "WordPress"
-    # method: "keyword"
-    # location: "body"
-    # keyword:
-      # - "wp-content"
-      # - "wp-includes"
-    # # 说明: 匹配响应正文中同时包含 "wp-content" 和 "wp-includes" 的情况
-
-  # # 示例 2: Drupal - 使用 keyword_any 方法匹配 title
-  # - cms: "Drupal"
-    # method: "keyword_any"
-    # location: "title"
-    # keyword:
-      # - "Drupal"
-      # - "Drupal 8"
-    # # 说明: 匹配网页标题中包含 "Drupal" 或 "Drupal 8" 的任一关键字
-
-  # # 示例 3: Joomla - 使用 regex 方法匹配 body
-  # - cms: "Joomla"
-    # method: "regex"
-    # location: "body"
-    # keyword:
-      # - "Joomla! [0-9]+\\.[0-9]+\\.[0-9]+"
-    # # 说明: 使用正则表达式匹配 Joomla 版本号（如 "Joomla! 3.9.0"）
-
-  # # 示例 4: Nginx - 使用 faviconhash 方法
-  # - cms: "Nginx"
-    # method: "faviconhash"
-    # location: "body" # faviconhash 不依赖 location，可设任意值
-    # keyword:
-      # - "1234567890" # 替换为实际的 favicon 哈希值
-    # # 说明: 匹配 favicon 的哈希值，keyword 只能有一个值
-
-  # # 示例 5: Apache - 使用 keyword 方法匹配 header
-  # - cms: "Apache"
-    # method: "keyword"
-    # location: "header"
-    # keyword:
-      # - "Apache/2"
-      # - "Server: Apache"
-    # # 说明: 匹配 HTTP 响应头中同时包含 "Apache/2" 和 "Server: Apache" 的情况
-
-  # # 示例 6: ThinkPHP - 使用 keyword_any 方法匹配 body
-  # - cms: "ThinkPHP"
-    # method: "keyword_any"
-    # location: "body"
-    # keyword:
-      # - "ThinkPHP"
-      # - "thinkphp"
-    # # 说明: 匹配正文中包含 "ThinkPHP" 或 "thinkphp" 的任一关键字
- 
