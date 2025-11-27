@@ -6,7 +6,7 @@
 
 它旨在帮助安全工程师和渗透测试人员快速、精准地识别网络资产指纹，并以美观、易读的格式呈现结果。工具原生支持本地指纹库与 Fofa、Quake、Hunter 等主流API联动，并集成了 Chainreactors Fingers、Goby、Ehole、Wappalyzer 等多种知名指纹库，是现代网络空间测绘和资产管理不可或缺的瑞士军刀。
 
-- **当前版本**：V0.6(主动探测版)
+- **当前版本**：V0.7(主动探测版)
 - **核心作者**：huaimeng
 - **项目地址**：[https://github.com/huaimeng666/gofinger](https://github.com/huaimeng666/gofinger)
 
