@@ -17,7 +17,7 @@ func printBasicInfo() {
 	green := "\033[32m"
 	reset := "\033[0m"
 	fmt.Printf("%sGOFinger: 红队资产指纹发现工具%s\n", green, reset)
-	fmt.Printf("%sVersion: V0.7%s\n", green, reset)
+	fmt.Printf("%sVersion: V0.8%s\n", green, reset)
 	fmt.Printf("%sAuthor: huaimeng%s\n", green, reset)
 	fmt.Printf("%sWebsite: https://github.com/huaimeng666/gofinger%s\n", green, reset)
 }
