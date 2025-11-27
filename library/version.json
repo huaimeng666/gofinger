@@ -2,12 +2,12 @@
   "files": [
     {
       "path": "library/finger.json",
-      "md5": "1eb215602074e2145570b5b4355e9164",
+      "md5": "9a2b20b9f41ca8a31c7cd62df9419cce",
       "url": "https://raw.githubusercontent.com/huaimeng666/gofinger/main/library/finger.json"
     },
     {
       "path": "library/finger.yaml",
-      "md5": "2371a1948c5b4a9f44464557ee77c7b7",
+      "md5": "d2a54f6bf531e5b3a0b5d12e88b440cd",
       "url": "https://raw.githubusercontent.com/huaimeng666/gofinger/main/library/finger.yaml"
     },
     {

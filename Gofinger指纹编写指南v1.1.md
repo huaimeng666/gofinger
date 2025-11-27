@@ -1,8 +1,8 @@
-# Gofinger 指纹编写指南 (v1.0 - 怀梦版)
+# Gofinger 指纹编写指南 (v1.1 - 怀梦版)
 
 ## 0. 前言
 
-本指南旨在为安全研究人员和开发人员提供一份关于如何为 Gofinger 工具编写自定义指纹规则的详尽说明。Gofinger 的指纹引擎主要使用 **JSON** 格式，同时支持 **YAML** 格式作为补充，提供了多种匹配方法来识别 Web 应用、框架、CMS 等。
+本指南旨在为安全研究人员和开发人员提供一份关于如何为 Gofinger 工具编写自定义指纹规则的详尽说明。Gofinger 的指纹引擎主要使用 **JSON** 格式，同时支持 **YAML** 格式作为主动识别的补充，提供了多种匹配方法来识别 Web 应用、框架、CMS 等。
 
 本指南的目标是，让任何一位新手在认真阅读后，都能独立编写出高质量的指纹规则。它不仅会告诉你"有什么"，更会教会你"怎么想"、"怎么做"和"如何做得更好"。
 
@@ -10,47 +10,57 @@
 
 ---
 
-## 1. 指纹文件基础
+## 1. 指纹体系概述
 
-- **主要格式**: 指纹规则主要使用 **JSON** 格式
-- **辅助格式**: 同时支持 YAML 格式作为补充
-- **文件位置**: 指纹文件位于 `library/` 目录下
-- **文件名称**: `finger.json`（主要）和 `finger.yaml`（辅助）
-- **字符编码**: 文件必须使用 `UTF-8` 编码
-- **推荐使用**: 优先使用 JSON 格式，YAML 格式用于快速原型和测试
+Gofinger 的指纹识别体系分为两部分：
+
+1.  **被动识别 (Passive)**: 主要依赖 `finger.json` 文件。此部分规则用于匹配从网络空间测绘平台（如 Fofa, Hunter, Quake）获取的已有数据。本指南的后续章节（如“最佳实践”）中提到的通用匹配规则（`method`, `location`, `keyword`）同样适用于 `finger.json`。
+2.  **主动识别 (Active)**: 完全由 `finger.yaml` 文件驱动。当启用主动识别模式时，Gofinger 会加载此文件中的规则，向目标发起真实HTTP请求，并根据响应进行匹配。
+3.  指纹文件基础
+    - **主要格式**: 默认被动指纹规则主要使用 **JSON** 格式
+    - **辅助格式**: 同时支持 YAML 格式作为主动给指纹识别库的补充
+    - **文件位置**: 指纹文件位于 `library/` 目录下
+    - **文件名称**: `finger.json`（主要）和 `finger.yaml`（辅助）
+    - **字符编码**: 文件必须使用 `UTF-8` 编码
+
 
 ---
 
 ## 2. 指纹规则核心结构
 
-一个指纹规则包含以下核心字段：
+**一个指纹规则包含以下核心字段：**
 
-| 字段名 | 数据类型 | 是否必需 | 描述 |
+| 字段名 | 类型 | 是否必须 | 描述 |
 | :--- | :--- | :--- | :--- |
-| `cms` | `string` | 是 | 指纹识别的目标名称，如 "WordPress"、"ThinkPHP" 等 |
-| `method` | `string` | 是 | 匹配方法，支持 "keyword"、"keyword_any"、"regex"、"faviconhash" |
-| `location` | `string` | 是 | 匹配位置，支持 "body"、"header"、"title" |
-| `keyword` | `array` | 是 | 匹配关键字数组，根据 method 不同有不同要求 |
+| `cms` | `String` | 是 | 指纹/组件的名称。这是识别成功后最终显示的结果。 |
+| `path` | `List<String>`| 是 | **主动识别核心字段**。定义了探测时要访问的URL路径列表。程序会依次请求这些路径，任一路径匹配成功则中止。**（finger.json不需要path字段）** |
+| `method` | `String` | 是 | 定义关键词的匹配方法，支持 `keyword`, `keyword_any`, `regex`, `faviconhash`。 |
+| `location`| `String` | 否 | 定义关键词的匹配位置，支持 `title`, `body`, `header`。若 `method` 为 `faviconhash`，此字段可省略。 |
+| `keyword` | `List<String>`| 是 | 用于匹配的关键词或正则表达式。 |
 
-### 2.1 支持的匹配方法详解
+### 2.1 `method` (匹配方法)
 
 #### 2.1.1 `keyword` - 全匹配
+
 - **逻辑**: 所有关键字都必须同时存在
 - **适用场景**: 需要多个特征同时满足的情况
 - **示例**: 识别 WordPress 需要同时包含 "wp-content" 和 "wp-includes"
 
 #### 2.1.2 `keyword_any` - 任一匹配
+
 - **逻辑**: 任意一个关键字存在即可
 - **适用场景**: 多个特征中满足一个即可的情况
 - **示例**: 识别 Drupal 包含 "Drupal" 或 "Drupal 8" 任一即可
 
 #### 2.1.3 `regex` - 正则匹配
+
 - **逻辑**: 使用正则表达式进行匹配
 - **要求**: keyword 数组只能包含一个正则表达式
 - **适用场景**: 需要复杂模式匹配的情况
 - **示例**: 匹配版本号、特定格式的字符串等
 
 #### 2.1.4 `faviconhash` - 图标哈希匹配
+
 - **逻辑**: 匹配网站 favicon 的哈希值
 - **要求**: keyword 数组只能包含一个哈希值
 - **适用场景**: 通过 favicon 特征识别特定应用
@@ -59,75 +69,110 @@
 ### 2.2 支持的匹配位置详解
 
 #### 2.2.1 `body` - 响应正文
+
 - **内容**: HTTP 响应体内容
 - **适用场景**: 页面源码中的特征标识
 - **示例**: HTML 中的注释、meta 标签、JavaScript 代码等
 
 #### 2.2.2 `header` - 响应头
+
 - **内容**: HTTP 响应头信息
 - **适用场景**: 服务器标识、安全头、自定义头等
 - **示例**: Server 头、X-Powered-By 头等
 
 #### 2.2.3 `title` - 页面标题
+
 - **内容**: HTML 页面的 `<title>` 标签内容
 - **适用场景**: 页面标题中的特征标识
 - **示例**: 管理后台标题、错误页面标题等
 
 ---
 
-## 3. 指纹规则编写示例
+## 3. `指纹库` 编写示例
 
-### 3.1 WordPress 指纹规则
-
-**JSON 格式（推荐）:**
-```json
-{
-  "cms": "WordPress",
-  "method": "keyword",
-  "location": "body",
-  "keyword": ["wp-content", "wp-includes"]
-}
-```
-
-**YAML 格式（辅助）:**
-```yaml
-- cms: "WordPress"
-  method: "keyword"
-  location: "body"
-  keyword:
-    - "wp-content"
-    - "wp-includes"
-```
-
-**说明**: 匹配响应正文中同时包含 "wp-content" 和 "wp-includes" 的情况，这是 WordPress 的典型特征。
-
-### 3.2 Drupal 指纹规则
+### 3.1 `keyword` (与逻辑) 指纹规则
 
 **JSON 格式（推荐）:**
+
 ```json
-{
-  "cms": "Drupal",
-  "method": "keyword_any",
-  "location": "title",
-  "keyword": ["Drupal", "Drupal 8"]
-}
+    {
+      "cms": "Nacos",
+      "method": "keyword",
+      "location": "body",
+      "keyword": [
+        "<title>Nacos</title>"
+      ]
+    },
 ```
 
-**YAML 格式（辅助）:**
+**YAML 格式（主动识别）:**
+
 ```yaml
-- cms: "Drupal"
+  - cms: "Tomcat默认页面"
+    path:
+      - "/manager/html"
+      - "/manager/status"
+    method: "keyword_any"
+    location: "body"
+    keyword:
+      - "<title>Apache Tomcat"
+      - 'form method="POST" action="j_security_check"'
+      - 'input name="j_username"'
+```
+
+**解释:**
+
+1.  **`cms`**: 识别出的组件名为 "Tomcat默认页面"。
+2.  **`path`**: 探测路径 `/manager/html`、`/manager/status`。
+3.  **`method`**: 使用 `keyword` (与逻辑)。
+4.  **`location`**: 在响应的 `body` 中查找。
+5.  **`keyword`**: 响应体必须同时包含 `<title>Apache Tomcat`、`form...` 和 `input...` 这三个字符串，才算匹配成功。
+
+### 3.2 `keyword_any` (或逻辑) 指纹规则
+
+**JSON 格式（被动识别）:**
+
+```json
+    {
+      "cms": "xxl-job-admin",
+      "method": "keyword_any",
+      "location": "title",
+      "keyword": [
+        "xxl-job-admin",
+        "任务调度中心",
+        "XXL-JOB管理平台",
+        "XXL-JOB任务调度中心",
+        "分布式任务调度平台XXL-JOB"
+      ]
+```
+
+**YAML 格式（主动识别）:**
+
+```yaml
+- cms: "xxl-job-admin"
+  path:
+    - "/xxl-job-admin/toLogin"
+    - "/xxl-job/toLogin"
   method: "keyword_any"
   location: "title"
   keyword:
-    - "Drupal"
-    - "Drupal 8"
+    - "xxl-job-admin"
+    - "任务调度中心"
+    - "XXL-JOB管理平台"
 ```
 
-**说明**: 匹配网页标题中包含 "Drupal" 或 "Drupal 8" 的任一关键字。
+**解释:**
 
-### 3.3 Joomla 指纹规则（带版本号）
+1.  **`cms`**: 识别出的组件名为 "xxl-job-admin"。
+2.  **`path`**: 程序会依次尝试访问 `/xxl-job-admin/toLogin` 和 `/xxl-job/toLogin`。**JSON只请求默认路径，不使用path字段**
+3.  **`method`**: 使用 `keyword_any` (或逻辑)。
+4.  **`location`**: 在响应的 `<title>` 标签中查找。
+5.  **`keyword`**: 只要标题中包含 "xxl-job-admin"、"任务调度中心" 或 "XXL-JOB管理平台" 中任意一个，即判定为匹配成功。
+
+### 3.3 正则匹配指纹规则（带版本号）
 
 **JSON 格式（推荐）:**
+
 ```json
 {
   "cms": "Joomla",
@@ -138,8 +183,11 @@
 ```
 
 **YAML 格式（辅助）:**
+
 ```yaml
 - cms: "Joomla"
+  path:
+    - "joomla"
   method: "regex"
   location: "body"
   keyword:
@@ -148,32 +196,37 @@
 
 **说明**: 使用正则表达式匹配 Joomla 版本号（如 "Joomla! 3.9.0"）。
 
-### 3.4 Nginx 服务器指纹规则
+### 3.4 图标哈希值指纹规则
 
 **JSON 格式（推荐）:**
+
 ```json
 {
   "cms": "Nginx",
   "method": "faviconhash",
-  "location": "body",
+  "location": "body",  # faviconhash 不依赖 location，可设任意值、不要此字段
   "keyword": ["1234567890"]
 }
 ```
 
 **YAML 格式（辅助）:**
+
 ```yaml
 - cms: "Nginx"
+  path：
+    - "/test/favicon.ico"
   method: "faviconhash"
-  location: "body"  # faviconhash 不依赖 location，可设任意值
+  location: "body"  # faviconhash 不依赖 location，可设任意值、不要此字段
   keyword:
     - "1234567890"  # 替换为实际的 favicon 哈希值
 ```
 
 **说明**: 匹配 favicon 的哈希值，keyword 只能有一个值。
 
-### 3.5 Apache 服务器指纹规则
+### 3.5 header 指纹规则
 
 **JSON 格式（推荐）:**
+
 ```json
 {
   "cms": "Apache",
@@ -184,8 +237,11 @@
 ```
 
 **YAML 格式（辅助）:**
+
 ```yaml
 - cms: "Apache"
+  path：
+    - "/test"
   method: "keyword"
   location: "header"
   keyword:
@@ -194,30 +250,6 @@
 ```
 
 **说明**: 匹配 HTTP 响应头中同时包含 "Apache/2" 和 "Server: Apache" 的情况。
-
-### 3.6 ThinkPHP 框架指纹规则
-
-**JSON 格式（推荐）:**
-```json
-{
-  "cms": "ThinkPHP",
-  "method": "keyword_any",
-  "location": "body",
-  "keyword": ["ThinkPHP", "thinkphp"]
-}
-```
-
-**YAML 格式（辅助）:**
-```yaml
-- cms: "ThinkPHP"
-  method: "keyword_any"
-  location: "body"
-  keyword:
-    - "ThinkPHP"
-    - "thinkphp"
-```
-
-**说明**: 匹配正文中包含 "ThinkPHP" 或 "thinkphp" 的任一关键字。
 
 ---
 
@@ -379,10 +411,6 @@
 library/
 ├── finger.json      # 主要指纹库（JSON 格式，推荐）
 ├── finger.yaml      # 扩展指纹库（YAML 格式，辅助）
-└── custom/          # 自定义指纹目录
-    ├── cms/
-    ├── framework/
-    └── server/
 ```
 
 ### 6.2 版本控制
@@ -391,7 +419,7 @@ library/
 - **兼容性**: 确保新规则与旧版本兼容
 
 ### 6.3 社区贡献
-- **规则分享**: 将有效的 JSON 格式规则分享给社区
+- **规则分享**: 将有效的 规则分享给社区
 - **问题反馈**: 及时报告和修复问题
 - **文档维护**: 保持文档的准确性和时效性
 
@@ -546,7 +574,7 @@ library/
 
 #### 启用调试模式
 ```bash
-./gofinger -l debug -u http://example.com
+./gofinger -ll debug -u http://example.com -a
 ```
 
 #### 查看匹配过程
@@ -585,4 +613,4 @@ Gofinger 的指纹规则编写是一个需要不断学习和优化的过程。�
 
 ---
 
-*本指南基于 Gofinger v0.5 版本编写，如有更新请参考最新版本。* 
+*本指南基于 Gofinger v0.6 版本编写，如有更新请参考最新版本。* 

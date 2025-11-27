@@ -2200,14 +2200,6 @@
       "method": "faviconhash"
     },
     {
-      "cms": "phpMyAdmin",
-      "keyword": [
-        "-1010568750"
-      ],
-      "location": "body",
-      "method": "faviconhash"
-    },
-    {
       "cms": "Zhejiang Uniview Technologies Co.",
       "keyword": [
         "-1240222446"
@@ -2667,14 +2659,6 @@
       "cms": "Redmine",
       "keyword": [
         "603314"
-      ],
-      "location": "body",
-      "method": "faviconhash"
-    },
-    {
-      "cms": "phpMyAdmin",
-      "keyword": [
-        "-476231906"
       ],
       "location": "body",
       "method": "faviconhash"
@@ -20815,14 +20799,6 @@
       "method": "keyword"
     },
     {
-      "cms": "Gunicorn",
-      "keyword": [
-        "gunicorn"
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
       "cms": "GuoBaoJinTai-Prodcut",
       "keyword": [
         "\"程序\"->\"jtsec\"->"
@@ -22616,14 +22592,6 @@
       "method": "keyword"
     },
     {
-      "cms": "HP-ProCurve-Switch",
-      "keyword": [
-        "server: ehttp"
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
       "cms": "HP-ProLiant-ML350",
       "keyword": [
         "proliant-ml350"
@@ -24153,14 +24121,6 @@
         "basic realm=\"infinova"
       ],
       "location": "header",
-      "method": "keyword"
-    },
-    {
-      "cms": "influxdata-InfluxDB",
-      "keyword": [
-        "class=\"influxdb-version\""
-      ],
-      "location": "body",
       "method": "keyword"
     },
     {
@@ -38162,14 +38122,6 @@
       "method": "keyword"
     },
     {
-      "cms": "TornadoServer",
-      "keyword": [
-        "server: tornadoserver"
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
       "cms": "Toshiba-Cable-Modem",
       "keyword": [
         "<font color=\"#980040\">"
@@ -44080,15 +44032,6 @@
       "method": "keyword"
     },
     {
-      "cms": "PhpMyAdmin",
-      "keyword": [
-        "pma_password",
-        "phpmyadmin"
-      ],
-      "location": "body",
-      "method": "keyword"
-    },
-    {
       "cms": "QiniuCDN",
       "keyword": [
         "glb.clouddn.com",
@@ -44570,14 +44513,6 @@
       "cms": "MinIO[+]默认口令minioadmin/minioadmin",
       "keyword": [
         "Server: MinIO"
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
-      "cms": "PhpMyAdmin",
-      "keyword": [
-        "set-cookie: phpmyadmin="
       ],
       "location": "header",
       "method": "keyword"
@@ -45199,14 +45134,6 @@
       "cms": "elasticsearch",
       "keyword": [
         "You Know, for Search"
-      ],
-      "location": "body",
-      "method": "keyword"
-    },
-    {
-      "cms": "phpMyadmin",
-      "keyword": [
-        "pma_password"
       ],
       "location": "body",
       "method": "keyword"
@@ -56885,14 +56812,6 @@
       "method": "keyword"
     },
     {
-      "cms": "phpMyadmin",
-      "keyword": [
-        "Set-Cookie:phpMyAdmin="
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
       "cms": "Tumblr",
       "keyword": [
         "X-Tumblr-User"
@@ -59136,14 +59055,6 @@
       "cms": "zope",
       "keyword": [
         "zope"
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
-      "cms": "TornadoServer",
-      "keyword": [
-        "TornadoServer"
       ],
       "location": "header",
       "method": "keyword"
@@ -63813,14 +63724,6 @@
       "method": "keyword"
     },
     {
-      "cms": "HP-ProCurve-Switch",
-      "keyword": [
-        "eHTTP"
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
       "cms": "Infinet-Wireless-WANFleX-Router",
       "keyword": [
         "WANFlex HTTP Daemon"
@@ -65320,14 +65223,6 @@
       "cms": "osTicket",
       "keyword": [
         "osTicket"
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
-      "cms": "Envoy",
-      "keyword": [
-        "Envoy"
       ],
       "location": "header",
       "method": "keyword"
@@ -67080,14 +66975,6 @@
       "cms": "Highcharts",
       "keyword": [
         "Highcharts"
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
-      "cms": "Cowboy",
-      "keyword": [
-        "Cowboy"
       ],
       "location": "header",
       "method": "keyword"
@@ -70189,14 +70076,6 @@
       "method": "keyword"
     },
     {
-      "cms": "SimpleHTTP",
-      "keyword": [
-        "SimpleHTTP"
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
       "cms": "Splunkd",
       "keyword": [
         "Splunkd"
@@ -72821,7 +72700,7 @@
       "method": "keyword"
     },
     {
-      "cms": "Harbor[+]默认口令admin/Harbor12345",
+      "cms": "Harbor",
       "keyword": [
         "Harbor"
       ],
@@ -83909,14 +83788,6 @@
       "method": "keyword"
     },
     {
-      "cms": "Werkzeug",
-      "keyword": [
-        "Werkzeug"
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
       "cms": "RabbitMQ",
       "keyword": [
         "RabbitMQ"
@@ -93805,7 +93676,7 @@
       "method": "keyword"
     },
     {
-      "cms": "Harbor[+]默认口令admin/Harbor12345",
+      "cms": "Harbor",
       "keyword": [
         "harbor.app"
       ],
@@ -123442,14 +123313,6 @@
       "method": "keyword"
     },
     {
-      "cms": "phpMyAdmin",
-      "keyword": [
-        "<img src=\"./themes/original/img/logo_right.png\" id=\"imLogo\" name=\"imLogo\" alt=\"phpMyAdmin\" border=\"0\" /></a>"
-      ],
-      "location": "body",
-      "method": "keyword"
-    },
-    {
       "cms": "F3Site",
       "keyword": [
         "<a href=\"http://compmaster.prv.pl\" target=\"_blank\">powered by F3Site</a></span>"
@@ -138140,14 +138003,6 @@
       "method": "keyword"
     },
     {
-      "cms": "phpmyadmin",
-      "keyword": [
-        "href=\"phpmyadmin.css.php"
-      ],
-      "location": "body",
-      "method": "keyword"
-    },
-    {
       "cms": "phpmybackuppro",
       "keyword": [
         "please login (use your mysql username and password): <a href=\"index.php?login=true"
@@ -139699,14 +139554,6 @@
       "method": "keyword"
     },
     {
-      "cms": "influxdata-influxdb",
-      "keyword": [
-        "influxdb"
-      ],
-      "location": "body",
-      "method": "keyword"
-    },
-    {
       "cms": "skillsoft-skillport-lms",
       "keyword": [
         "<table border=\"0\" width=\"100%\" id=\"logobanner\"><tr width=\"100%\"><td width=\"82%\"><img src=\"https://customer.skillport.com/spcustom/"
@@ -140682,14 +140529,6 @@
       "cms": "WordPress",
       "keyword": [
         "wordpress_test_cookie"
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
-      "cms": "phpMyAdmin",
-      "keyword": [
-        "realm=\"phpmyadmin"
       ],
       "location": "header",
       "method": "keyword"
@@ -146289,14 +146128,6 @@
       "method": "keyword"
     },
     {
-      "cms": "Cowboy",
-      "keyword": [
-        "server: cowboy"
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
       "cms": "LANCOM-VPN-1781EF",
       "keyword": [
         "server: lancom 1781ef"
@@ -147058,14 +146889,6 @@
       "cms": "H3C-HDM",
       "keyword": [
         "server: h3c-hdm"
-      ],
-      "location": "header",
-      "method": "keyword"
-    },
-    {
-      "cms": "envoy",
-      "keyword": [
-        "server: envoy"
       ],
       "location": "header",
       "method": "keyword"
@@ -156752,7 +156575,7 @@
       "method": "keyword"
     },
     {
-      "cms": "Harbor[+]默认口令admin/Harbor12345",
+      "cms": "Harbor",
       "keyword": [
         "Harbor"
       ],
@@ -182712,14 +182535,6 @@
       "method": "keyword"
     },
     {
-      "cms": "phpMyAdmin",
-      "keyword": [
-        "phpmyadmin "
-      ],
-      "location": "title",
-      "method": "keyword"
-    },
-    {
       "cms": "JEECMS",
       "keyword": [
         "powered by jeecms"
@@ -192013,14 +191828,6 @@
       "method": "keyword"
     },
     {
-      "cms": "influxdata-InfluxDB",
-      "keyword": [
-        "influxdb - admin interface"
-      ],
-      "location": "title",
-      "method": "keyword"
-    },
-    {
       "cms": "Bitnami-LAMP",
       "keyword": [
         "bitnami: open source. simplified"
@@ -196900,30 +196707,6 @@
       ]
     },
     {
-      "cms": "phpMyAdmin",
-      "method": "keyword",
-      "location": "header",
-      "keyword": [
-        "pma_lang="
-      ]
-    },
-    {
-      "cms": "phpMyAdmin",
-      "method": "keyword",
-      "location": "header",
-      "keyword": [
-        "phpMyAdmin="
-      ]
-    },
-    {
-      "cms": "phpMyAdmin",
-      "method": "keyword",
-      "location": "body",
-      "keyword": [
-        "/themes/pmahomme/img/logo_right.png"
-      ]
-    },
-    {
       "cms": "H3C-AM8000",
       "method": "keyword",
       "location": "body",
@@ -198828,6 +198611,144 @@
       "cms": "AYLOT-安翼物联Opc网关系统",
       "keyword": [
         "Opc网关系统"
+      ],
+      "location": "title",
+      "method": "keyword"
+    },
+    {
+      "cms": "Elastic",
+      "keyword": [
+        "Elastic"
+      ],
+      "location": "title",
+      "method": "keyword"
+    },
+    {
+      "cms": "ServiceComb",
+      "keyword": [
+        "Service Center",
+		"serviceCenter"
+      ],
+      "location": "title",
+      "method": "keyword_any"
+    },
+    {
+      "cms": "phpmyadmin",
+      "keyword": [
+        "pma_password",
+        "phpmyadmin"
+      ],
+      "location": "body",
+      "method": "keyword"
+    },
+    {
+      "cms": "phpmyadmin",
+      "keyword": [
+        "set-cookie: phpmyadmin="
+      ],
+      "location": "header",
+      "method": "keyword"
+    },
+    {
+      "cms": "phpmyadmin",
+      "keyword": [
+        "pma_password"
+      ],
+      "location": "body",
+      "method": "keyword"
+    },
+    {
+      "cms": "phpmyadmin",
+      "keyword": [
+        "Set-Cookie:phpmyadmin="
+      ],
+      "location": "header",
+      "method": "keyword"
+    },
+    {
+      "cms": "phpmyadmin",
+      "keyword": [
+        "<img src=\"./themes/original/img/logo_right.png\" id=\"imLogo\" name=\"imLogo\" alt=\"phpmyadmin\" border=\"0\" /></a>"
+      ],
+      "location": "body",
+      "method": "keyword"
+    },
+    {
+      "cms": "phpmyadmin",
+      "keyword": [
+        "href=\"phpmyadmin.css.php"
+      ],
+      "location": "body",
+      "method": "keyword"
+    },
+    {
+      "cms": "phpmyadmin",
+      "keyword": [
+        "realm=\"phpmyadmin"
+      ],
+      "location": "header",
+      "method": "keyword"
+    },
+    {
+      "cms": "phpmyadmin",
+      "keyword": [
+        "phpmyadmin "
+      ],
+      "location": "title",
+      "method": "keyword"
+    },
+    {
+      "cms": "phpmyadmin",
+      "method": "keyword",
+      "location": "header",
+      "keyword": [
+        "phpmyadmin="
+      ]
+    },
+    {
+      "cms": "phpmyadmin",
+      "method": "keyword",
+      "location": "body",
+      "keyword": [
+        "/themes/pmahomme/img/logo_right.png"
+      ]
+    },
+    {
+      "cms": "phpmyadmin",
+      "method": "keyword",
+      "location": "header",
+      "keyword": [
+        "pma_lang="
+      ]
+    },
+    {
+      "cms": "phpmyadmin",
+      "keyword": [
+        "-476231906"
+      ],
+      "location": "body",
+      "method": "faviconhash"
+    },
+    {
+      "cms": "phpmyadmin",
+      "keyword": [
+        "-1010568750"
+      ],
+      "location": "body",
+      "method": "faviconhash"
+    },
+    {
+      "cms": "influxdata-influxdb",
+      "keyword": [
+        "class=\"influxdb-version\""
+      ],
+      "location": "body",
+      "method": "keyword"
+    },
+    {
+      "cms": "influxdata-influxdb",
+      "keyword": [
+        "influxdb - admin interface"
       ],
       "location": "title",
       "method": "keyword"

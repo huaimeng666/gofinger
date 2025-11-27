@@ -4,9 +4,10 @@ fingerprint:
     - /nacos/
     - /api/nacos/
     method: "keyword"
-    location: "body"
+    location: "title"
     keyword:
-      - "<title>Nacos</title>"
+      - "Nacos"
+      
   - cms: "xxl-job-admin"
     path:
       - "/xxl-job-admin/toLogin"
@@ -28,3 +29,16 @@ fingerprint:
     keyword:
       - "Apache Druid"
 
+  - cms: "Tomcat默认页面"
+    path:
+      - "/manager/html"
+      - "/manager/status"
+    method: "keyword_any"
+    location: "body"
+    keyword:
+      - "Tomcat Web Application Manager"
+      - "Tomcat Manager Application"
+      - "<title>Apache Tomcat"
+      - 'form method="POST" action="j_security_check"'
+      - 'input name="j_username"'
+      - 'input name="j_password"'
